@@ -71,7 +71,7 @@ function getArgumentsCount(funcs) {
  *
  */
 function getPowerFunction(exponent) {
-  return function (a) {
+  return function power(a) {
     return a ** exponent;
   };
 }
@@ -90,7 +90,20 @@ function getPowerFunction(exponent) {
  *   getPolynom()      => null
  */
 function getPolynom() {
-  throw new Error('Not implemented');
+  let coefficients = null;
+  return function (x) {
+    if (Array.isArray(x)) {
+      coefficients = x;
+      return;
+    }
+    if (!coefficients || coefficients.length === 0) {
+      return null;
+    }
+    return coefficients.reduce((acc, coeff, idx) => {
+      const power = coefficients.length - idx - 1;
+      return acc + coeff * x ** power;
+    }, 0);
+  };
 }
 
 /**
