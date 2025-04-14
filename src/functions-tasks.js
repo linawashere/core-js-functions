@@ -89,19 +89,14 @@ function getPowerFunction(exponent) {
  *   getPolynom(8)     => y = 8
  *   getPolynom()      => null
  */
-function getPolynom() {
-  let coefficients = null;
-  return function (x) {
-    if (Array.isArray(x)) {
-      coefficients = x;
-      return;
-    }
-    if (!coefficients || coefficients.length === 0) {
-      return null;
-    }
-    return coefficients.reduce((acc, coeff, idx) => {
+function getPolynom(...coefficients) {
+  if (coefficients.length === 0) {
+    return null;
+  }
+  return function polynom(x) {
+    return coefficients.reduce((acc, item, idx) => {
       const power = coefficients.length - idx - 1;
-      return acc + coeff * x ** power;
+      return acc + item * x ** power;
     }, 0);
   };
 }
@@ -204,8 +199,12 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let count = startFrom;
+  return function plus() {
+    count += 1;
+    return count;
+  };
 }
 
 module.exports = {
